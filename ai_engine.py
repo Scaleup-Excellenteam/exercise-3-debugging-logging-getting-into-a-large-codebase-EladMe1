@@ -138,23 +138,10 @@ class chess_ai:
                     evaluated_piece = game_state.get_piece(row, col)
                     evaluation_score += self.get_piece_value(evaluated_piece, player)
         return evaluation_score
-
+    #fix bugs - all the values of black is negetive
     def get_piece_value(self, piece, player):
         if player is Player.PLAYER_1:
             if piece.is_player("black"):
-                if piece.get_name() is "k":
-                    return -1000
-                elif piece.get_name() is "q":
-                    return -100
-                elif piece.get_name() is "r":
-                    return -50
-                elif piece.get_name() is "b":
-                    return -30
-                elif piece.get_name() is "n":
-                    return -30
-                elif piece.get_name() is "p":
-                    return -10
-            else:
                 if piece.get_name() is "k":
                     return 1000
                 elif piece.get_name() is "q":
@@ -167,6 +154,19 @@ class chess_ai:
                     return 30
                 elif piece.get_name() is "p":
                     return 10
+            else:
+                if piece.get_name() is "k":
+                    return -1000
+                elif piece.get_name() is "q":
+                    return -100
+                elif piece.get_name() is "r":
+                    return -50
+                elif piece.get_name() is "b":
+                    return -30
+                elif piece.get_name() is "n":
+                    return -30
+                elif piece.get_name() is "p":
+                    return -10
         else:
             if piece.is_player("white"):
                 if piece.get_name() is "k":
