@@ -6,6 +6,9 @@
 #
 from Piece import Rook, Knight, Bishop, Queen, King, Pawn
 from enums import Player
+import logging
+
+logger = logging.getLogger(__name__)
 
 '''
 r \ c     0           1           2           3           4           5           6           7 
@@ -28,6 +31,8 @@ r \ c     0           1           2           3           4           5         
 class game_state:
     # Initialize 2D array to represent the chess board
     def __init__(self):
+        # for log
+        self.couner = 0
         # The board is a 2D array
         # TODO: Change to a numpy format later
         self.white_captives = []
@@ -221,11 +226,14 @@ class game_state:
         all_black_moves = self.get_all_legal_moves(Player.PLAYER_2)
         if self._is_check and self.whose_turn() and not all_white_moves:
             print("white lost")
+            logging.info("Black win")
             return 0
         elif self._is_check and not self.whose_turn() and not all_black_moves:
             print("black lost")
+            logging.info("white win")
             return 1
         elif not all_white_moves and not all_black_moves:
+            logging.info("there was stalemate")
             return 2
         else:
             return 3
@@ -465,6 +473,10 @@ class game_state:
                     self.board[current_square_row][current_square_col] = Player.EMPTY
 
                 self.white_turn = not self.white_turn
+                if valid_moves and moving_piece.get_name() == "n":
+                    self.couner += 1
+                    message = "the moves of Knight is: {}".format(self.couner)
+                    logger.info(message)
 
             else:
                 pass
@@ -854,7 +866,8 @@ class game_state:
                     # self._is_check = True
                     _checks.append((king_location_row + row_change[i], king_location_col + col_change[i]))
         # print([_checks, _pins, _pins_check])
-        return [_pins_check, _pins, _pins_check]
+        #fix bugs _checks doesnt return
+        return [_checks, _pins, _pins_check]
 
 
 class chess_move():
